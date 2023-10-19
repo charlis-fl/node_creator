@@ -1,8 +1,11 @@
+import Header from './Header';
+
 const NodeEditor = () => {
   return (
-    <div>
-      Home page
-    </div>
+    <>
+      <Header />
+      <div></div>
+    </>
   );
 };
 

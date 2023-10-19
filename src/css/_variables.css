@@ -35,7 +35,7 @@
     --default-interface-gray-300: #e7e7e7;
     --default-interface-gray-400: #e5e1e3;
     --default-interface-gray-500: #d4ced2;
-    --default-interface-gray-700: #3c3434;
+    --default-interface-gray-700: #5B5B5B;
     --default-brand-navy: #1e1e32;
     --default-brand-navy-light: #565665;
     --default-brand-indigo: #5b5bd8;
@@ -47,5 +47,6 @@
     --default-brand-off-white: #f2f0f0;
     --default-brand-white: #ffffff;
     --default-brand-purple: #BF40BF;
+    --default-brand-green: #61C453;
   }
   
