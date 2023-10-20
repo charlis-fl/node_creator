@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkcanvas_node_app=self.webpackChunkcanvas_node_app||[]).push([[839],{2839:function(e,n,a){a.r(n);var c=a(3329);n.default=function(){return(0,c.jsx)("div",{children:"Home page"})}}}]);
+//# sourceMappingURL=839.a093d226.chunk.js.map

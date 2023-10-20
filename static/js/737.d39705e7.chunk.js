@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkcanvas_node_app=self.webpackChunkcanvas_node_app||[]).push([[737],{4737:function(e,n,a){a.r(n);var c=a(3329);n.default=function(){return(0,c.jsx)("div",{children:"Note Taker"})}}}]);
+//# sourceMappingURL=737.d39705e7.chunk.js.map
