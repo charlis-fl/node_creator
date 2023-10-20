@@ -1,8 +1,24 @@
 import { RegisterOptions } from 'react-hook-form';
 
+export type EdgeType = {
+    id: string;
+    source: string;
+    sourceHandle: string;
+    target: string;
+    targetHandle: string;
+}
+export type NodeType = {
+    id: string;
+    position: {
+      x: number;
+      y: number;
+    };
+    type: string;
+    data: CustomNodeType;
+}
 export type NodeConfigurationComponentType = {
-    node: CustomNodeType | null;
-    setCurrentNodeOpened: (value: CustomNodeType | null) => void;
+    node: NodeType | null;
+    setCurrentNodeOpened: (value: NodeType | null) => void;
 };
 
 export type CustomNodeType = {
@@ -24,10 +40,9 @@ export type ConfigurationInputType = {
     inputLabel: string;
     type: string;
     info: string;
-    placeholder: string;
     value: string;
+    placeholder: string;
     fieldName: string;
-    defaultValue: any;
     setError?: (context: string, value: string) => void;
     config?: RegisterOptions;
 };

@@ -2,12 +2,14 @@
 import { useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Tooltip } from 'react-tooltip';
+import { useAppDispatch, useAppSelector } from 'common/hooks/state';
+import { setWorkflow } from 'common/store/appSlice';
 import { DynamicControl } from 'common/designSystem/dynamicControl';
 import Button from 'common/designSystem/button/button';
 import closeIcon from 'assets/icons/close.svg';
 import infoIcon from 'assets/icons/info-circle.svg';
 import { InputStyled, NodeConfigurationStyled } from './Styled';
-import { NodeConfigurationComponentType, ConfigurationInputType } from './types';
+import { NodeConfigurationComponentType, ConfigurationInputType, NodeType } from './types';
 import 'react-tooltip/dist/react-tooltip.css';
 
 const NodeConfiguration = (props : NodeConfigurationComponentType) => {
@@ -18,21 +20,74 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
   const formMethods = useForm({
     mode: 'onBlur',
   });
-  const { handleSubmit, setError, formState: { errors } } = formMethods;
+  const dispatch = useAppDispatch();
+  const {
+    handleSubmit,
+    setError,
+    formState: { errors },
+    setValue,
+    trigger,
+  } = formMethods;
   const [fields, setFields] = useState<Array<ConfigurationInputType> | []>([]);
+  const [errorWithoutSaving, setErrorWithoutSaving] = useState(false);
+  const workflowState = useAppSelector((state) => state.app.workflow);
+
   useEffect(() => {
-    if (node?.configuration?.inputs?.length) {
-      const inputs = node.configuration.inputs as Array<ConfigurationInputType>;
+    if (node?.data?.configuration?.inputs?.length) {
+      const inputs = node.data.configuration.inputs as Array<ConfigurationInputType>;
       setFields(inputs);
     } else {
       setFields([]);
     }
   }, [node]);
-  const closeConfig = () => {
-    setCurrentNodeOpened(null);
+  useEffect(() => {
+    fields.forEach((field) => {
+      const inputValue = field.value;
+      setValue(field.fieldName, inputValue);
+    });
+  }, [fields]);
+  const closeConfig = async () => {
+    if (node) {
+      const errorCheck = await trigger();
+      let dataCheck = true;
+      const currentNode = workflowState.nodes.find((n: NodeType) => n.id === node.id);
+      const currentFields = currentNode?.data?.configuration?.inputs;
+      if (currentFields) {
+        currentFields.forEach((f) => {
+          if (f.value.length === 0) {
+            dataCheck = false;
+          }
+        });
+        if (errorCheck && dataCheck) {
+          setCurrentNodeOpened(null);
+        }
+        if (errorCheck && !dataCheck) {
+          setErrorWithoutSaving(true);
+        } else {
+          setErrorWithoutSaving(false);
+        }
+      }
+    }
   };
   const onSubmit = (data: any) => {
-    // console.log(data);
+    if (node) {
+      const updatedNode = JSON.parse(JSON.stringify(node)) as NodeType;
+      updatedNode.data.configuration.inputs = updatedNode.data.configuration.inputs.map((input) => {
+        const newInput = { ...input };
+        newInput.value = data[input.fieldName];
+        return newInput;
+      });
+      const updatedNodes = workflowState.nodes.map((n) => {
+        if (n.id === node.id) {
+          return updatedNode;
+        }
+        return n;
+      });
+      const newWorkflowState = { ...workflowState };
+      newWorkflowState.nodes = updatedNodes;
+      dispatch(setWorkflow(newWorkflowState));
+      setErrorWithoutSaving(false);
+    }
   };
   const setFieldError = (field: string, value: string) => {
     setError(field, { type: 'custom', message: value });
@@ -41,13 +96,13 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
     node ? (
       <NodeConfigurationStyled>
         <div className="header">
-          <span>{node.label}</span>
-          <button type="button" className="close" onClick={() => closeConfig()}>
+          <span>{node.data.label}</span>
+          <button type="button" className="close" onClick={closeConfig}>
             <img src={closeIcon} alt="close" />
           </button>
         </div>
         <form method="POST" action="#" onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off">
-          <div className="form-heading">{node.configuration.heading}</div>
+          <div className="form-heading">{node.data.configuration.heading}</div>
           <Tooltip id="field-info" />
           <FormProvider {...formMethods}>
             {fields.map((field) => (
@@ -72,11 +127,13 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
               </InputStyled>
             ))}
           </FormProvider>
+          {errorWithoutSaving && Object.keys(errors).length === 0 && <div className="error-without-saving">Please save before closing</div>}
           <div className="form-actions">
             <Button
               type="button"
               label="Cancel"
               usage="secondary"
+              onClick={closeConfig}
             />
             <Button
               type="submit"

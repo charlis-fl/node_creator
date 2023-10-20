@@ -14,32 +14,52 @@ import ReactFlow, {
   addEdge,
   ReactFlowInstance,
   ReactFlowProvider,
-  Node,
   useKeyPress,
+  Node,
 } from 'reactflow';
-import workflow from 'common/utils/workflow.json';
+import { useEffectOnce } from 'common/hooks/useEffectOnce';
+import { useAppDispatch, useAppSelector } from 'common/hooks/state';
+import { setWorkflow } from 'common/store/appSlice';
 import Stencil from './Stencil';
 import CustomNode from './CustomNode';
 import NodeConfiguration from './NodeConfiguration';
-import { CustomNodeType } from './types';
+import { CustomNodeType, EdgeType, NodeType } from './types';
 import 'reactflow/dist/style.css';
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const getId = () => crypto.randomUUID();
 
 const ReactFlowEditor = () => {
+  const dispatch = useAppDispatch();
+  const workflowState = useAppSelector((state) => state.app.workflow);
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const deletePressed = useKeyPress('Delete');
   const [currentNodeId, setCurrentNodeId] = useState<number | null>(null);
   const [reactFlowInstance, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState<any>(workflow.initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(workflow.initialEdges);
-  const [currentNodeOpened, setCurrentNodeOpened] = useState<CustomNodeType | null>(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [currentNodeOpened, setCurrentNodeOpened] = useState<NodeType | null>(null);
 
   const onConnect = useCallback((params: any) => setEdges((els) => addEdge(params, els)), []);
   const nodeTypes = useMemo(() => ({
     customNode: CustomNode,
   }), []);
+
+  useEffect(() => {
+    if (nodes.length || edges.length) {
+      const latestWorkflow = {
+        nodes: nodes as Array<NodeType>,
+        edges: edges as Array<EdgeType>,
+      };
+      dispatch(setWorkflow(latestWorkflow));
+    }
+  }, [nodes.toString(), edges.toString()]);
+
+  useEffectOnce(() => {
+    if (workflowState && workflowState.nodes.length) {
+      setNodes(workflowState.nodes);
+      setEdges(workflowState.edges);
+    }
+  });
 
   useEffect(() => {
     if (currentNodeId && deletePressed) {
@@ -48,12 +68,6 @@ const ReactFlowEditor = () => {
       }));
     }
   }, [deletePressed, currentNodeId]);
-  // const onSave = useCallback(() => {
-  //   if (rfInstance) {
-  //     const flow = rfInstance.toObject();
-  //     localStorage.setItem(flowKey, JSON.stringify(flow));
-  //   }
-  // }, [rfInstance]);
   const onSelectionChange = (data: { edges: Array<any> ; nodes: Array<any>;}) => {
     if (data && data.nodes && data.nodes.length) {
       setCurrentNodeId(data.nodes[0].id);
@@ -66,18 +80,21 @@ const ReactFlowEditor = () => {
   }, []);
 
   const onNodeDoubleClick = (event: React.MouseEvent, node: Node) => {
-    setCurrentNodeOpened(node.data);
+    const selectedNode = workflowState.nodes.find((n) => n.id === node.id);
+    if (selectedNode && !currentNodeOpened) {
+      setCurrentNodeOpened(selectedNode);
+    }
   };
-
   const onDrop = useCallback(
     (event: any) => {
       event.preventDefault();
       if (reactFlowWrapper && reactFlowWrapper.current && reactFlowInstance) {
         const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
         const type = event.dataTransfer.getData('application/reactflow');
-        const label = event.dataTransfer.getData('label');
-        const imageURL = event.dataTransfer.getData('image-url');
-        const imageDesc = event.dataTransfer.getData('image-alt');
+        const nodeData = JSON.parse(event.dataTransfer.getData('node-data')) as CustomNodeType;
+        const { label, image, configuration } = nodeData;
+        const imageURL = image.url;
+        const imageDesc = image.alt;
 
         // check if the dropped element is valid
         if (typeof type === 'undefined' || !type) {
@@ -97,6 +114,7 @@ const ReactFlowEditor = () => {
               url: imageURL,
               alt: imageDesc,
             },
+            configuration,
           },
         };
         setNodes((nds) => nds.concat(newNode));
@@ -104,10 +122,12 @@ const ReactFlowEditor = () => {
     },
     [reactFlowInstance],
   );
-
   return (
     <ReactFlowProvider>
-      <NodeConfiguration node={currentNodeOpened} setCurrentNodeOpened={setCurrentNodeOpened} />
+      <NodeConfiguration
+        node={currentNodeOpened}
+        setCurrentNodeOpened={setCurrentNodeOpened}
+      />
       <div className="reactflow-wrapper" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}

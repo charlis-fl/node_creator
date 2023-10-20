@@ -127,6 +127,11 @@ export const NodeConfigurationStyled = styled.div`
       justify-content: flex-end;
       gap: 8px;
     }
+    .error-without-saving{
+      color: var(--default-interface-apricot-500);
+      font-size: 12px;
+      margin-top: 12px;
+    }
   }
 `;
 
@@ -185,7 +190,7 @@ export const InputStyled = styled.label`
     display: none;
   }
   .field-error{
-    color: var(--default-interface-apricot-700);
+    color: var(--default-interface-apricot-500);
     font-size: 12px;
     margin-top: 2px;
   }
