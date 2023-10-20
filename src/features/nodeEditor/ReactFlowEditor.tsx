@@ -47,13 +47,11 @@ const ReactFlowEditor = () => {
   }), []);
 
   useEffect(() => {
-    if (nodes.length || edges.length) {
-      const latestWorkflow = {
-        nodes: nodes as Array<NodeType>,
-        edges: edges as Array<EdgeType>,
-      };
-      dispatch(setWorkflow(latestWorkflow));
-    }
+    const latestWorkflow = {
+      nodes: nodes as Array<NodeType>,
+      edges: edges as Array<EdgeType>,
+    };
+    dispatch(setWorkflow(latestWorkflow));
   }, [nodes.toString(), edges.toString()]);
 
   useEffectOnce(() => {
