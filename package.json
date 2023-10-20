@@ -1,8 +1,7 @@
 {
-  "homepage": "https://charlis-fl.github.io",
+  "homepage": "https://charlis-fl.github.io/nodecreator",
   "name": "canvas-node-app",
   "version": "0.1.0",
-  "private": false,
   "dependencies": {
     "@hookform/resolvers": "^2.9.11",
     "@reduxjs/toolkit": "^1.9.1",
