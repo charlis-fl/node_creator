@@ -44,6 +44,7 @@ export type ConfigurationInputType = {
     placeholder: string;
     fieldName: string;
     setError?: (context: string, value: string) => void;
+    setImageData: (value: string) => void;
     config?: RegisterOptions;
 };
 

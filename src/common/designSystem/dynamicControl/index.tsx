@@ -9,8 +9,24 @@ export const DynamicControl = ({
   config,
   id,
   placeholder,
+  setImageData,
 }: ConfigurationInputType) => {
   const { register } = useFormContext();
+  const readFile = (e: any) => {
+    if (e.target.files && e.target.files.length
+    && (e.target.files[0].type === 'image/png'
+    || e.target.files[0].type === 'image/jpeg'
+    || e.target.files[0].type === 'image/gif'
+    || e.target.files[0].type === 'image/svg+xml')) {
+      const FR = new FileReader();
+      FR.readAsDataURL(e.target.files[0]);
+      FR.onload = () => {
+        if (FR.result) {
+          setImageData(FR.result.toString());
+        }
+      };
+    }
+  };
   switch (type) {
     case 'text':
       return (
@@ -42,7 +58,7 @@ export const DynamicControl = ({
             <img src={uploadIcon} alt="upload" />
           </span>
           <span>Click to Upload</span>
-          <input id="input-file" type="file" />
+          <input id="input-file" type="file" onChange={readFile} />
         </label>
       );
     default:

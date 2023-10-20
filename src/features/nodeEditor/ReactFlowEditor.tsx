@@ -9,6 +9,7 @@ import {
 import ReactFlow, {
   Background,
   Controls,
+  ControlButton,
   useNodesState,
   useEdgesState,
   addEdge,
@@ -20,6 +21,7 @@ import ReactFlow, {
 import { useEffectOnce } from 'common/hooks/useEffectOnce';
 import { useAppDispatch, useAppSelector } from 'common/hooks/state';
 import { setWorkflow } from 'common/store/appSlice';
+import downloadIcon from 'assets/icons/download.svg';
 import Stencil from './Stencil';
 import CustomNode from './CustomNode';
 import NodeConfiguration from './NodeConfiguration';
@@ -85,6 +87,15 @@ const ReactFlowEditor = () => {
       setCurrentNodeOpened(selectedNode);
     }
   };
+  const onNodeDragStop = (event: React.MouseEvent, node: Node) => {
+    if (nodes.length || edges.length) {
+      const latestWorkflow = {
+        nodes: nodes as Array<NodeType>,
+        edges: edges as Array<EdgeType>,
+      };
+      dispatch(setWorkflow(latestWorkflow));
+    }
+  };
   const onDrop = useCallback(
     (event: any) => {
       event.preventDefault();
@@ -122,6 +133,15 @@ const ReactFlowEditor = () => {
     },
     [reactFlowInstance],
   );
+  const downloadJSON = () => {
+    const a = document.createElement('a');
+    const workflowStateString = JSON.stringify(workflowState);
+    a.href = URL.createObjectURL(
+      new Blob([workflowStateString], { type: 'application/json' }),
+    );
+    a.download = 'workflow.json';
+    a.click();
+  };
   return (
     <ReactFlowProvider>
       <NodeConfiguration
@@ -141,10 +161,17 @@ const ReactFlowEditor = () => {
           onDragOver={onDragOver}
           onSelectionChange={onSelectionChange}
           onNodeDoubleClick={onNodeDoubleClick}
+          onNodeDragStop={onNodeDragStop}
           fitView
         >
           <Background />
-          <Controls />
+          <Controls>
+            <ControlButton onClick={() => downloadJSON()}>
+              <span className="download-icon">
+                <img src={downloadIcon} alt="download" />
+              </span>
+            </ControlButton>
+          </Controls>
         </ReactFlow>
       </div>
       <Stencil />

@@ -30,6 +30,7 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
   } = formMethods;
   const [fields, setFields] = useState<Array<ConfigurationInputType> | []>([]);
   const [errorWithoutSaving, setErrorWithoutSaving] = useState(false);
+  const [imageData, setImageData] = useState('');
   const workflowState = useAppSelector((state) => state.app.workflow);
 
   useEffect(() => {
@@ -75,6 +76,9 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
       updatedNode.data.configuration.inputs = updatedNode.data.configuration.inputs.map((input) => {
         const newInput = { ...input };
         newInput.value = data[input.fieldName];
+        if (input.fieldName === 'brand-logo') {
+          newInput.value = imageData;
+        }
         return newInput;
       });
       const updatedNodes = workflowState.nodes.map((n) => {
@@ -113,7 +117,7 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
                     <img src={infoIcon} alt="info" />
                   </span>
                 </div>
-                <DynamicControl setError={setFieldError} {...field} />
+                <DynamicControl setError={setFieldError} {...field} setImageData={setImageData} />
                 <>
                   {Object.keys(errors).map((errKey: any) => {
                     if (field.fieldName === errKey) {

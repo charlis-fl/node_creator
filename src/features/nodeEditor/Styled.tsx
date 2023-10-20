@@ -62,6 +62,14 @@ export const WorkflowContainerStyled = styled.div`
   height: calc(100vh - 90px);
   .reactflow-wrapper{
     height: 100%;
+    .download-icon{
+      width: 40px;
+      height: 40px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
   }
 `;
 
