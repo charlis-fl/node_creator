@@ -10,7 +10,7 @@ const NoteTaker = React.lazy(() => import('./noteTaker'));
 const WebRoutes = () => {
   return (
     <Suspense fallback={<Loader />}>
-      <Router basename={process.env.PUBLIC_URL}>
+      <Router basename="/">
         <Routes>
           <Route path={linkPath.homePage} element={<SidebarRoute component={HomePage} />} />
           <Route path={linkPath.nodeEditor} element={<SidebarRoute component={NodeEditor} />} />
