@@ -1,0 +1,165 @@
+{
+  "initialNodes": [
+      {
+          "id": "1",
+          "position": { "x": 0, "y": 150 },
+          "type": "customNode",
+          "data": {
+            "label": "HTTP Trigger",
+            "image": {
+              "url": "https://i.imgur.com/BYtog9b.png",
+              "alt": "http trigger"
+            },
+            "configuration": {
+              "heading": "Sandbox URL",
+              "inputs": [
+                {
+                  "id": 1,
+                  "inputLabel": "URL",
+                  "fieldName": "url",
+                  "type": "url",
+                  "info": "Info",
+                  "placeholder": "",
+                  "value": "",
+                  "defaultValue": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "2",
+          "position": { "x": 0, "y": 250 },
+          "type": "customNode",
+          "data": {
+            "label": "SignUp Page",
+            "image": {
+              "url": "https://i.imgur.com/zwoMqDf.png",
+              "alt": "sign up page"
+            },
+            "configuration": {
+              "heading": "SignUp Page",
+              "inputs": [
+                {
+                  "id": 1,
+                  "inputLabel": "Page Title",
+                  "type": "text",
+                  "fieldName": "page-title",
+                  "info": "Info",
+                  "placeholder": "page title",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                },
+                {
+                  "id": 2,
+                  "inputLabel": "Subheading",
+                  "fieldName": "sub-heading",
+                  "type": "text",
+                  "info": "Info",
+                  "placeholder": "subheading",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                },
+                {
+                  "id": 3,
+                  "inputLabel": "Brand Logo",
+                  "fieldName": "brand-logo",
+                  "type": "image-upload",
+                  "info": "Info",
+                  "placeholder": "",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                },
+                {
+                  "id": 4,
+                  "inputLabel": "Email Input Title",
+                  "fieldName": "email-input-title",
+                  "type": "text",
+                  "info": "Info",
+                  "placeholder": "input title",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                },
+                {
+                  "id": 5,
+                  "inputLabel": "Email Input Placeholder",
+                  "fieldName": "email-input-placeholder",
+                  "type": "text",
+                  "info": "Info",
+                  "placeholder": "placeholder text",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                },
+                {
+                  "id": 6,
+                  "inputLabel": "Submit Button Text",
+                  "fieldName": "submit-button-text",
+                  "type": "text",
+                  "info": "Info",
+                  "placeholder": "CTA text",
+                  "value": "",
+                  "defaultValue": "",
+                  "config": {
+                    "required": "Field is required"
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "id": "3",
+          "position": { "x": 0, "y": 350 },
+          "type": "customNode",
+          "data": {
+            "label": "Redirect User",
+            "image": {
+              "url": "https://i.imgur.com/ftA2Wfh.png",
+              "alt": "redirectUser"
+            },
+            "configuration": {
+              "heading": "Redirect URL",
+              "inputs": [
+                {
+                  "id": 1,
+                  "inputLabel": "URL",
+                  "fieldName": "url",
+                  "type": "url",
+                  "info": "Info",
+                  "placeholder": "https://",
+                  "value": "",
+                  "defaultValue": ""
+                }
+              ]
+            }
+          }
+        }
+  ],
+  "initialEdges": [
+      {
+          "id": "e1-2",
+          "source": "1",
+          "target": "2"
+        },
+        {
+          "id": "e2-3",
+          "source": "2",
+          "target": "3"
+        }
+  ]
+}

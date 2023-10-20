@@ -1,10 +1,14 @@
 import Header from './Header';
+import ReactFlowEditor from './ReactFlowEditor';
+import { WorkflowContainerStyled } from './Styled';
 
 const NodeEditor = () => {
   return (
     <>
       <Header />
-      <div></div>
+      <WorkflowContainerStyled>
+        <ReactFlowEditor />
+      </WorkflowContainerStyled>
     </>
   );
 };
