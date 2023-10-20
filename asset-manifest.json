@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/nodecreator/static/css/main.ecfa0844.css",
-    "main.js": "/nodecreator/static/js/main.f459835f.js",
+    "main.js": "/nodecreator/static/js/main.fff023a0.js",
     "static/js/839.a093d226.chunk.js": "/nodecreator/static/js/839.a093d226.chunk.js",
     "static/css/611.35fec784.chunk.css": "/nodecreator/static/css/611.35fec784.chunk.css",
     "static/js/611.d8bad95d.chunk.js": "/nodecreator/static/js/611.d8bad95d.chunk.js",
@@ -19,7 +19,7 @@
     "static/media/magnify.svg": "/nodecreator/static/media/magnify.5bd5a8ba0417ef145ef9778df8e9bede.svg",
     "static/media/bell-badge.svg": "/nodecreator/static/media/bell-badge.73f78bfe18d85acc017e64c55c7e4d96.svg",
     "main.ecfa0844.css.map": "/nodecreator/static/css/main.ecfa0844.css.map",
-    "main.f459835f.js.map": "/nodecreator/static/js/main.f459835f.js.map",
+    "main.fff023a0.js.map": "/nodecreator/static/js/main.fff023a0.js.map",
     "839.a093d226.chunk.js.map": "/nodecreator/static/js/839.a093d226.chunk.js.map",
     "611.35fec784.chunk.css.map": "/nodecreator/static/css/611.35fec784.chunk.css.map",
     "611.d8bad95d.chunk.js.map": "/nodecreator/static/js/611.d8bad95d.chunk.js.map",
@@ -28,6 +28,6 @@
   },
   "entrypoints": [
     "static/css/main.ecfa0844.css",
-    "static/js/main.f459835f.js"
+    "static/js/main.fff023a0.js"
   ]
 }
