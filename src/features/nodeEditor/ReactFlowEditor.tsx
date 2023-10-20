@@ -147,6 +147,7 @@ const ReactFlowEditor = () => {
       <NodeConfiguration
         node={currentNodeOpened}
         setCurrentNodeOpened={setCurrentNodeOpened}
+        setNodes={setNodes}
       />
       <div className="reactflow-wrapper" ref={reactFlowWrapper}>
         <ReactFlow

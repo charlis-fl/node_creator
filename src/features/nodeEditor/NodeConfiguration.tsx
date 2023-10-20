@@ -16,6 +16,7 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
   const {
     node,
     setCurrentNodeOpened,
+    setNodes,
   } = props;
   const formMethods = useForm({
     mode: 'onBlur',
@@ -89,6 +90,7 @@ const NodeConfiguration = (props : NodeConfigurationComponentType) => {
       });
       const newWorkflowState = { ...workflowState };
       newWorkflowState.nodes = updatedNodes;
+      setNodes(updatedNodes);
       dispatch(setWorkflow(newWorkflowState));
       setErrorWithoutSaving(false);
     }

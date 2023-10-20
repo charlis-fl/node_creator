@@ -18,6 +18,7 @@ export type NodeType = {
 }
 export type NodeConfigurationComponentType = {
     node: NodeType | null;
+    setNodes: (nodes: any[]) => void;
     setCurrentNodeOpened: (value: NodeType | null) => void;
 };
 
